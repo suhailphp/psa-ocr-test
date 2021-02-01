@@ -13,7 +13,8 @@ const Tesseract = require('tesseract.js');
 const worker =  Tesseract.createWorker(
     {logger: m => console.log(m)}
 );
-
+const PSM = Tesseract.PSM
+const OEM = Tesseract.OEM
 
 
 
@@ -63,7 +64,7 @@ module.exports = (Router, Models) => {
 
                 try{
 
-                    let fileData = await readFile('./files/img_1.png')
+                    let fileData = await readFile('./files/testDoc.png')
 
                     // Tesseract.detect(fileData, { logger: m => console.log(m) })
                     //     .then(({ data }) => {
@@ -74,13 +75,27 @@ module.exports = (Router, Models) => {
                     await worker.load();
                     await worker.loadLanguage('eng+ara');
                     await worker.initialize('eng+ara');
+
+                    // await worker.loadLanguage('eng');
+                    // await worker.initialize('eng');
+
+                    await worker.setParameters({
+                        tessedit_ocr_engine_mode:OEM.TESSERACT_ONLY,
+                        tessedit_pageseg_mode:PSM.AUTO_ONLY,
+                        tessjs_create_hocr: '0',
+                        tessjs_create_tsv:'0',
+                        tessjs_create_box:'0',
+                        tessjs_create_unlv:'0',
+                        tessjs_create_osd:'0',
+                    });
+
                     const resData = await worker.recognize(fileData,{logger: m => console.log(m)});
 
                     debug('DATA GOT');
                     //await worker.terminate();
 
                     //console.log(resData.data.blocks)
-                    data.text = resData.data.hocr
+                    data.text = resData.data.text
                     data.lines = resData.data.blocks[0].page.blocks[0].paragraphs[0].lines
                     //res.send(resData.data.blocks[0].page.blocks[0].paragraphs[0].lines[0].text)
 
