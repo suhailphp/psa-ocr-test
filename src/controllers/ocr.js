@@ -3,10 +3,9 @@
 const appConfig = require('../configurations/appConfig.js')
 const debug = require('debug')(appConfig.APP_NAME + ":CONTROLLER-VehicleType.js");
 const i18n = require("i18n");
-const activeDirectory = require('activedirectory');
 const {gatekeeper} = require('../middlewares/index');
 
-let dateformat = require('dateformat');
+const fs = require('fs')
 
 
 const Utils = require('../utilities');
