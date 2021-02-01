@@ -5,30 +5,23 @@ const i18n = require("i18n");
 module.exports.getSideMenu = function (userType, url) {
 
     let menuList = [
-        // {
-        //     module: "Home",
-        //     title: "Home",
-        //     allow: [ 'ADMIN', 'DRIVER','ENGINEER'],
-        //     url: '/',
-        //     icon: 'nav-icon fas fa-tachometer-alt',
-        // },
-
         {
-            module: "Survey",
-            title: "Survey",
-            allow: ['ADMIN'],
-            url: '/survey',
-            icon: 'nav-icon fas fa-poll',
+            module: "Home",
+            title: "Home",
+            allow: [ 'ADMIN', 'DRIVER','ENGINEER'],
+            url: '/',
+            icon: 'nav-icon fas fa-tachometer-alt',
         },
 
 
-
         {
-            module: "Category",
-            title: "Category",
+            module: "OCR",
+            title: "Ocr test",
             allow: ['ADMIN'],
-            url: '/category',
-            icon: 'nav-icon fas fa-folder',
+            url: '/ocr',
+            icon: 'nav-icon fas fa-file',
+            notification: '',
+            subMenu: null
         },
         {
             module: "Users",
@@ -55,13 +48,6 @@ module.exports.getSideMenu = function (userType, url) {
                     allow: ['ADMIN'],
                     url: '/logs',
                     icon: 'nav-icon fas fa-list',
-                },
-                {
-                    module: "Field",
-                    title: "Fields",
-                    allow: ['ADMIN'],
-                    url: '/field',
-                    icon: 'nav-icon fas fa-keyboard',
                 }
             ]
         }

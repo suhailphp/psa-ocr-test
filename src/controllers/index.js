@@ -15,7 +15,7 @@ module.exports = (router, Models) => {
         .all('/', async (req, res, next) => {
 
 
-            return res.redirect('survey')
+            //return res.redirect('survey')
 
             let data = {
                 title: req.__('Home'),
