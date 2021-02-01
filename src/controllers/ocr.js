@@ -60,7 +60,7 @@ module.exports = (Router, Models) => {
                 }
 
                 try{
-                    let fileData = await readFile('./files/img.png')
+                    let fileData = await readFile('./files/img_2.png')
 
                     await worker.load();
                     await worker.loadLanguage('eng+ara');
