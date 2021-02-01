@@ -63,7 +63,7 @@ module.exports = (Router, Models) => {
 
                 try{
 
-                    let fileData = await readFile('./files/testDoc.jpg')
+                    let fileData = await readFile('./files/img_1.png')
 
                     // Tesseract.detect(fileData, { logger: m => console.log(m) })
                     //     .then(({ data }) => {
@@ -71,14 +71,11 @@ module.exports = (Router, Models) => {
                     //     });
 
 
-                    debug('START');
                     await worker.load();
-                    debug('LOADED');
                     await worker.loadLanguage('eng+ara');
-                    debug('LANGUAGE loadLanguage');
                     await worker.initialize('eng+ara');
-                    debug('LANGUAGE initialize');
-                    const resData = await worker.recognize(fileData);
+                    const resData = await worker.recognize(fileData,{logger: m => console.log(m)});
+
                     debug('DATA GOT');
                     //await worker.terminate();
 
