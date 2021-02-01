@@ -3,6 +3,35 @@
 <section class="content">
     <div class="container-fluid">
         {{{text}}}
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-text-width"></i>
+                            Line by line
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <ul>
+                            {{#each lines}}
+                                <li>{{this.text}}</li>
+                            {{/each}}
+
+                        </ul>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+
+
+            <!-- ./col -->
+        </div>
+
+
     </div>
 
 </section>

@@ -60,20 +60,25 @@ module.exports = (Router, Models) => {
                 }
 
                 try{
-                    let fileData = await readFile('./files/img_2.png')
-
+                    let fileData = await readFile('./files/test.png')
+                    //debug(fileData)
                     await worker.load();
                     await worker.loadLanguage('eng+ara');
                     await worker.initialize('eng+ara');
                     // await worker.setParameters({
                     //     tessjs_create_pdf: '1',
                     // });
-                    const {data: {text}} = await worker.recognize(fileData);
-                    await worker.terminate();
-                    data.text = text
+                    const resData = await worker.recognize(fileData);
+                    //await worker.terminate();
+
+                    console.log(resData.data.blocks)
+                    data.text = resData.data.blocks[0].text
+                    data.lines = resData.data.blocks[0].page.blocks[0].paragraphs[0].lines
+                    //res.send(resData.data.blocks[0].page.blocks[0].paragraphs[0].lines[0].text)
                     res.render('form', data)
                 }
                 catch (error){
+                    //await worker.terminate();
                     console.log('some error ->'+error)
                     res.send(error.message)
                 }
