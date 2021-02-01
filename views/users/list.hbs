@@ -1,0 +1,132 @@
+
+
+    <!-- Main content -->
+    <section class="content">
+
+
+          <div class="card">
+            <div class="card-header">
+                <button class="card-title" style="float: left" onclick="window.location.href ='/users/add';" >
+                    {{__ 'New User'}}
+                </button>
+            </div>
+
+            <div class="card-body">
+
+
+
+              <table id="listTable" class="table table-bordered table-striped" style="width: 100%" >
+                <thead>
+                <tr>
+                    <th>{{__ 'User Name'}}</th>
+                    <th>{{__ 'Full Name'}}</th>
+                    <th>{{__ 'Created By'}}</th>
+                    <th>{{__ 'User Type'}}</th>
+                    <th>{{__ 'Created On'}}</th>
+                    <th>{{__ 'Status'}}</th>
+                    <th>{{__ 'Action'}}</th>
+                </tr>
+                </thead>
+
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+
+<script>
+  $(function () {
+    $("#listTable").DataTable({
+        // "paging": true,
+        // "lengthChange": true,
+        // "searching": true,
+        // "ordering": true,
+        // "info": true,
+        "autoWidth": true,
+
+        searchHighlight: true,
+        //"stateSave": true,
+        'processing': true,
+        'serverSide': true,
+        'ajax': window.location.href,
+        'columnDefs': [
+            {
+                "width": '10%', "targets": 0,
+                render: function (data, type, row) {
+                    return row.UserName
+                }
+            },
+            {
+                "width": '20%', "targets": 1,
+                render: function (data, type, row) {
+                    return getLang() == 'ar' ? row.FullNameAr : row.FullNameEn
+                }
+            },
+            {
+                "width": '20%', "targets": 2,
+                render: function (data, type, row) {
+                    return getLang() == 'ar' ? row.UserCreatedBy.FullNameAr : row.UserCreatedBy.FullNameEn
+                }
+            },
+            {
+                "width": '15%', "targets": 3,
+                render: function (data, type, row) {
+                    return row.UserType
+                }
+            },
+
+            {
+                "width": '20%', "targets": 4,
+                render: function (data, type, row) {
+                    if (row.CreatedOn) {
+                        moment.locale(getLang())
+                        return '<p dir="ltr">'+moment(row.CreatedOn).format(dateFormat)+'</p>';
+                    }
+                    else
+                        return ''
+                }
+            },
+            {
+                "width": '5%', "targets": 5,
+                render: function (data, type, row) {
+                    return row.Active ? ' <span class="badge bg-success">{{__
+                            "Active"}}</span>' : '<span class="badge bg-danger">{{__ "Inactive"}}</span>'
+                }
+            },
+            {
+                "width": '10%', "targets": 6,
+                "orderable": false,"searchable": false,
+                render: function (data, type, row) {
+                    return `
+                                <a class="btn btn-xs btn-success" href="/users/${row.UserName}/view"><i class="fa fa-eye"></i></a>
+                                <a class="btn btn-xs btn-warning" href="/users/${row.UserName}/edit"><i class="fas fa-edit"></i></a>
+                                <button class="btn btn-xs ${ !row.Active ? 'btn-success' : 'btn-danger'} "
+                                 href="javascript:;"onclick="document.getElementById('${row.UserName}').submit();"><i class="fa ${ !row.Active ? 'fa-check' : 'fa-times'}"></i></button>
+                                <form method="post" action="/users/${row.UserName}/status/?_method=PUT"
+                                          id="${row.UserName}"></form>
+
+                        `
+                }
+            }
+        ],
+        "aaSorting": [[0, 'DESC']],
+        "language": {
+            "url": getLang() == 'ar' ? "//cdn.datatables.net/plug-ins/1.10.19/i18n/Arabic.json" : ''
+        },
+        responsive: {
+            details: {
+                //display: $.fn.dataTable.Responsive.display.childRowImmediate,
+                type: ''
+            }
+        }
+    });
+
+
+
+  });
+</script>

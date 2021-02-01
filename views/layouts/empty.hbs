@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html dir="{{? LNG '==' 'ar' 'rtl' 'ltr'}}" lang="{{LNG}}" >
+{{>head}}
+<body class="hold-transition sidebar-mini layout-fixed">
+
+<div class="wrapper">
+
+    <!--Navigation Top Bar Start-->
+    {{>header}}
+    <!--Navigation Top Bar End-->
+
+
+    <!--Left navigation section start-->
+    {{>sidebar}}
+    <!--Left navigation section end-->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+
+        <!-- Content Header (Page header) -->
+        {{>breadcrumbs}}
+        <!-- /.content-header -->
+
+
+        {{{body}}}
+
+
+    </div>
+    <!-- /.content-wrapper -->
+
+
+    <!--Footer start-->
+    {{>footer}}
+    <!--Footer end-->
+
+
+    <!-- Control Sidebar -->
+    {{>controlSidebar}}
+    <!-- /.control-sidebar -->
+</div>
+
+{{>scripts}}
+
+</body>
+</html>

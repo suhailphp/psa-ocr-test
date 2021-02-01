@@ -1,0 +1,67 @@
+
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="col-12">
+            <div class="card">
+
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-hover text-nowrap">
+                        <thead>
+                        <tr>
+                            <td style="width: 30%">{{__ 'Domain Users'}}</td>
+                            <td>{{User.UserName}}</td>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+        
+
+                        <tr>
+                            <td>{{__ 'Full Name English'}}</td>
+                            <td>{{User.FullNameEn}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>{{__ 'Full Name Arabic'}}</td>
+                            <td>{{User.FullNameAr}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>{{__ 'Email'}}</td>
+                            <td><a href="mailto:{{User.Email}}?Subject={{__ 'helpdesk'}}" target="_top">{{User.Email}}</a></td>
+                        </tr>
+
+                        <tr>
+                            <td>{{__ 'Mobile'}}</td>
+                            <td>{{User.Mobile}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>{{__ 'Military Number'}}</td>
+                            <td>{{? User.MilitaryNumber '==' '0' '' User.MilitaryNumber}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>{{__ 'User Type'}}</td>
+                            <td>{{User.UserType}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>{{__ 'Active'}}</td>
+                            <td>{{#if User.Active}} <span class="badge bg-success">{{__ 'yes'}}</span> {{else}}<span class="badge bg-warning">{{__ 'no'}}</span>{{/if}} </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </section>
+
+<script>
+
+</script>

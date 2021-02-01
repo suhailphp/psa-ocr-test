@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html dir="{{? LNG '==' 'ar' 'rtl' 'ltr'}}" lang="{{LNG}}" >
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="EPQ Survey : Sharjah Police Science Academy">
+    <meta name="author" content="PSA">
+    <title>{{title}}</title>
+
+    <!-- Favicons-->
+    <link rel="shortcut icon" href="{{CONFIG.BASE_URL}}dist/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" type="image/x-icon" href="{{CONFIG.BASE_URL}}dist/favicon.ico">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="{{CONFIG.BASE_URL}}dist/favicon.ico">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="{{CONFIG.BASE_URL}}dist/favicon.ico">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="{{CONFIG.BASE_URL}}dist/favicon.ico">
+
+    <!-- GOOGLE WEB FONT -->
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,500,600" rel="stylesheet">
+
+    <!-- BASE CSS -->
+    <link href="{{CONFIG.BASE_URL}}wilio/css/bootstrap.min{{? LNG '==' 'ar' '.rtl' ''}}.css" rel="stylesheet">
+    <link href="{{CONFIG.BASE_URL}}wilio/css/menu{{? LNG '==' 'ar' '.rtl' ''}}.css" rel="stylesheet">
+    <link href="{{CONFIG.BASE_URL}}wilio/css/style{{? LNG '==' 'ar' '.rtl' ''}}.css" rel="stylesheet">
+    <link href="{{CONFIG.BASE_URL}}wilio/css/vendors.css" rel="stylesheet">
+
+    <!-- YOUR CUSTOM CSS -->
+    <link href="{{CONFIG.BASE_URL}}wilio/css/custom{{? LNG '==' 'ar' '.rtl' ''}}.css" rel="stylesheet">
+
+    <!-- MODERNIZR MENU -->
+    <script src="{{CONFIG.BASE_URL}}wilio/js/modernizr.js"></script>
+
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="{{CONFIG.BASE_URL}}plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{CONFIG.BASE_URL}}plugins/toastr/toastr.min.css">
+
+</head>
+
+<body>
+
+<div id="preloader">
+    <div data-loader="circle-side"></div>
+</div><!-- /Preload -->
+
+<div id="loader_form">
+    <div data-loader="circle-side-2"></div>
+</div><!-- /loader_form -->
+
+
+<!-- /menu -->
+<script src="{{CONFIG.BASE_URL}}wilio/js/jquery-3.2.1.min.js"></script>
+<div class="container-fluid full-height">
+    {{{body}}}
+</div>
+<!-- /container-fluid -->
+
+
+
+
+
+
+<!-- COMMON SCRIPTS -->
+
+<script src="{{CONFIG.BASE_URL}}wilio/js/common_scripts.min.js"></script>
+<script src="{{CONFIG.BASE_URL}}wilio/js/velocity.min.js"></script>
+<script src="{{CONFIG.BASE_URL}}wilio/js/functions.js"></script>
+
+<!-- Wizard script -->
+<script src="{{CONFIG.BASE_URL}}wilio/js/survey_func.js"></script>
+
+
+
+
+{{>scripts}}
+{{>messages}}
+<script>
+    $("#wizard_container").wizard({
+        beforeForward:  function( event, state ) {
+            if(parentRef) return parentRef(event, state)
+        },
+        afterSelect: function (event, state) {
+            $("#progressbar").progressbar("value", state.percentComplete);
+            $("#location").text("(" + state.stepsComplete + "/" + state.stepsPossible + ")");
+        }
+    })
+</script>
+
+</body>
+</html>
+

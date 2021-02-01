@@ -1,0 +1,33 @@
+
+<script type="text/javascript">
+
+{{#if errorMessage}}
+        printMessage('error','{{errorMessage}}')
+{{/if}}
+{{#if warningMessage}}
+        printMessage('warning','{{warningMessage}}')
+{{/if}}
+{{#if successMessage}}
+        printMessage('success','{{successMessage}}')
+{{/if}}
+{{#if infoMessage}}
+        printMessage('info','{{infoMessage}}')
+{{/if}}
+
+
+    function printMessage(type,message){
+        const Toast = Swal.mixin({
+            toast: true,
+            position: getLang() == 'ar' ?'top-left':'top-end',
+            showConfirmButton: false,
+            timer: 6000
+        });
+        Toast.fire({
+            type: type,
+            title: message
+        })
+
+    }
+
+</script>
+

@@ -1,0 +1,302 @@
+
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+
+        <!-- form start -->
+        <form role="form" method="post" action="{{CONFIG.BASE_URL}}users" onsubmit="return CheckForm()" >
+
+        <div class="row">
+            <!-- left column -->
+
+
+            <div class="col-md-6">
+                <!-- general form elements -->
+                <div class="card card-primary">
+
+                    <!-- /.card-header -->
+
+                        <div class="card-body">
+
+
+                            <div class="form-group">
+                                <div class="custom-control custom-switch" >
+                                    <input type="checkbox" class="custom-control-input" id="ADLogin" name="ADLogin" value="true"
+                                        {{#if User.ADLogin}} checked="checked" {{/if}} onchange="ADChange()">
+                                    <label class="custom-control-label" for="ADLogin" style="cursor: pointer !important;">{{__ 'Active Directory Login'}}</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="userName" id="userNameLabel">{{__ 'Domain User'}}</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">@</span>
+                                    </div>
+                                    <input type="text" class="form-control" id="UserName" name="UserName" value="{{User.UserName}}" onchange="UserNameChange()"
+                                           placeholder="{{__ 'User Name'}}" required data-bv-notempty-message="{{__ 'This Field is Required.'}}"
+                                            {{#compare User.Mode '==' 'Edit'}}readonly{{/compare}}  >
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="FullNameEn">{{__ 'Full Name English'}}</label>
+                                <input type="text" class="form-control" name="FullNameEn" id="FullNameEn" value="{{User.FullNameEn}}"
+                                       placeholder="{{__ 'Full Name English'}}" required  data-bv-notempty-message="{{__ 'This Field is Required.'}}" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="FullNameAr">{{__ 'Full Name Arabic'}}</label>
+                                <input type="text" class="form-control"  name="FullNameAr" id="FullNameAr" value="{{User.FullNameAr}}" dir="rtl"
+                                       placeholder="{{__ 'Full Name Arabic'}}" required data-bv-notempty-message="{{__ 'This Field is Required.'}}" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Email">{{__ 'Email'}}</label>
+                                <input type="email" class="form-control"  name="Email" id="Email" value="{{User.Email}}"
+                                       placeholder="{{__ 'Email'}}" required data-bv-notempty-message="{{__ 'This Field is Required.'}}" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Mobile">{{__ 'Mobile'}}</label>
+                                <input type="text" class="form-control phone"  name="Mobile" id="Mobile" value="{{User.Mobile}}"
+                                       placeholder="{{__ 'Mobile'}}" data-bv-notempty-message="{{__ 'This Field is Required.'}}" />
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label>{{__ 'User Type'}}</label>
+                                <select class="form-control select2" style="width: 100%;" name="UserType" id="UserType" placeholder="{{__ 'User Type'}}"
+                                        required data-bv-notempty-message="{{__ 'This Field is Required.'}}" onchange="UserTypeChange()">
+                                    <option value="" disabled selected>{{__ 'Choose'}}</option>
+
+                                    <option value="USER" {{#compare User.UserType '==' 'USER'}} selected {{/compare}}>
+                                        USER
+                                    </option>
+
+                                    {{#compare isAdmin '==' true}}
+                                        <option value="ADMIN" {{#compare User.UserType '==' 'ADMIN'}} selected {{/compare}}>
+                                            Administrator
+                                        </option>
+                                    {{/compare}}
+                                </select>
+                            </div>
+
+
+
+
+                            <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="Active"
+                                       name="Active"  value="true" {{#if User.Active}} checked="checked" {{/if}} >
+                                <label class="form-check-label" for="Active" >{{__ 'Active'}}</label>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">{{__ 'Submit'}}</button>
+                        </div>
+
+                </div>
+                <!-- /.card -->
+
+
+
+            </div>
+            <!--/.col (left) -->
+
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="card card-secondary" id="PasswordData" style="display: none">
+                <div class="card-header">
+                    <h1 class="card-title">{{__ 'User Password'}}</h1>
+                </div>
+
+                <div class="card-body">
+
+
+                    <div class="form-group">
+                        <label >{{__ 'Password'}}</label>
+                        <input type="password" class="form-control "  name="Password" id="Password"
+                               placeholder="{{__ 'Password'}}"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label >{{__ 'Confirm Password'}}</label>
+                        <input type="password" class="form-control "  name="Confirm" id="Confirm"
+                               placeholder="{{__ 'Confirm Password'}}"/>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card card-secondary" id="DriverData" style="display: none">
+                <div class="card-header">
+                    <h3 class="card-title">{{__ 'Driver Details'}}</h3>
+                </div>
+
+                <div class="card-body">
+
+
+                    <div class="form-group">
+                        <label for="LicenseNumber">{{__ 'License Number'}}</label>
+                        <input type="text" class="form-control"  name="LicenseNumber" id="LicenseNumber" value="{{User.LicenseNumber}}"
+                               placeholder="{{__ 'License Number'}}"  />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LicenseIssueDate">{{__ 'License Issue Date'}}</label>
+                        <input type="date" class="form-control"  name="LicenseIssueDate" id="LicenseIssueDate" value="{{dateToChrome User.LicenseIssueDate}}"
+                               placeholder="{{__ 'License Issue Date'}}"  />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LicenseExpiryDate">{{__ 'License Expiry Date'}}</label>
+                        <input type="date" class="form-control"  name="LicenseExpiryDate" id="LicenseExpiryDate" value="{{dateToChrome User.LicenseExpiryDate}}"
+                               placeholder="{{__ 'License Expiry Date'}}"  />
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+        </div>
+
+            <input type="hidden" name="Mode" id="Mode" value="{{User.Mode}}">
+            <input type="hidden" name="EditUserName" id="EditUserName" value="{{User.UserName}}">
+
+        </form>
+    </div>
+</section>
+
+<script>
+
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2()
+        ADChange()
+        UserTypeChange()
+    });
+
+    function ADChange() {
+        if($('#ADLogin').prop("checked") == true){
+            $('#PasswordData').hide("slow" );
+            $('#userNameLabel').html("{{__ 'Domain User'}}");
+            UserNameChange()
+        }
+        else{
+            $('#PasswordData').show("slow" );
+            $('#userNameLabel').html("{{__ 'User Name'}}");
+        }
+    }
+
+    function UserTypeChange() {
+        let UserType = $('#UserType').val();
+        if(UserType && UserType === 'DRIVER'){
+            $('#DriverData').show("slow" );
+        }
+        else{
+            $('#DriverData').hide("slow" );
+        }
+    }
+
+    function UserNameChange() {
+        let UserName = $('#UserName').val();
+
+        if($('#Mode').val() == 'Add' && UserName){
+            //check user name is exist
+            $.ajax({
+                url: '/users/'+UserName+'/CheckUserName',
+                type: 'get',
+                success: function(data) {
+                    if(data && data == true){
+                        Swal.queue([{
+                            title: '{{__ "User Name Exist"}}',
+                            text:'{{__ "This User Name already exist, Please try again"}}'
+                        }])
+                        $('#UserName').val('');
+                    }
+                    else if($('#ADLogin').prop("checked") == true && UserName != ''){
+                        //Take user Data from AD
+                        $.ajax({
+                            url: '/users/'+UserName+'/ADUserAjax',
+                            type: 'get',
+                            success: function(data) {
+                                if(data.Email){
+                                    $('#FullNameAr').val(data.FullNameAr);
+                                    $('#FullNameEn').val(data.FullNameEn);
+                                    $('#Email').val(data.Email);
+                                }
+                                else{
+                                    $('#UserName').val('')
+                                    $('#UserName').focus()
+                                    Swal.queue([{
+                                        title: '{{__ "User not found"}}',
+                                        text:'{{__ "This user not found on Active Directory"}}'
+                                    }])
+                                }
+                            },
+                            error: function(xhr, desc, err) {
+                                console.log(xhr);
+                                console.log("Details: " + desc + "\nError:" + err);
+                            }
+                        }); // end ajax call
+                    }
+                },
+                error: function(xhr, desc, err) {
+                    console.log(xhr);
+                    console.log("Details: " + desc + "\nError:" + err);
+                }
+            }); // end ajax call
+        }
+
+
+
+    }
+
+    function CheckForm() {
+        let UserType = $('#UserType').val();
+
+        if($('#ADLogin').prop("checked") == false){
+
+
+            if($('#Mode').val() == 'Add' && ($('#Password').val() == '' || $('#Confirm').val() == '')){
+                Swal.queue([{
+                    title: '{{__ "Enter Password"}}',
+                    text:'{{__ "Please Enter the password"}}'
+                }])
+                return false
+            }
+            else if($('#Password').val() != $('#Confirm').val()){
+                Swal.queue([{
+                    title: '{{__ "Password Not matching"}}',
+                    text:'{{__ "Both Password not matching"}}'
+                }])
+                return false
+            }
+
+        }
+        if(UserType && UserType == 'DRIVER'){
+
+            if($('#LicenseNumber').val() == ''){
+                Swal.queue([{
+                    title: '{{__ "License Number"}}',
+                    text:'{{__ "Please enter License Number"}}'
+                }])
+
+                return false
+            }
+        }
+
+    }
+
+</script>

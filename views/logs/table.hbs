@@ -1,0 +1,89 @@
+
+
+
+<table id="listTable" class="table table-bordered table-striped" style="width: 100%" >
+    <thead>
+    <tr>
+        <th>{{__ 'Detail'}}</th>
+        <th>{{__ 'Created By'}}</th>
+        <th>{{__ 'Created On'}}</th>
+
+    </tr>
+    </thead>
+
+</table>
+
+<input type="hidden" name="From" value="{{From}}">
+<input type="hidden" name="To" value="{{To}}">
+
+
+
+
+
+<script type="text/javascript">
+    $(function () {
+
+        let From = $('#From').val()
+        let To = $('#To').val()
+
+        $("#listTable").DataTable({
+            // "paging": true,
+            // "lengthChange": true,
+            // "searching": true,
+            // "ordering": true,
+            // "info": true,
+            "autoWidth": true,
+
+            searchHighlight: true,
+            //"stateSave": true,
+            'processing': true,
+            'serverSide': true,
+            'ajax':'/logs/tableData/'+From+'/'+To,
+            'columnDefs': [
+
+                {
+                    "width": '20%', "targets": 0,
+                    render: function (data, type, row) {
+                        return row.Type + ' '+ row.Mode
+                    }
+                },
+                {
+                    "width": '15%', "targets": 1,
+                    render: function (data, type, row) {
+                        return getLang() == 'ar' ? row.User.FullNameAr : row.User.FullNameEn
+                    }
+                },
+
+
+                {
+                    "width": '20%', "targets": 2,
+                    render: function (data, type, row) {
+                        if (row.CreatedOn) {
+                            moment.locale(getLang())
+                            return '<p dir="ltr">'+moment(row.CreatedOn).format(dateFormat)+'</p>';
+                        }
+                        else
+                            return ''
+                    }
+                }
+            ],
+            "aaSorting": [[2, 'DESC']],
+            "language": {
+                "url": getLang() == 'ar' ? "//cdn.datatables.net/plug-ins/1.10.19/i18n/Arabic.json" : ''
+            },
+            responsive: {
+                details: {
+                    //display: $.fn.dataTable.Responsive.display.childRowImmediate,
+                    type: ''
+                }
+            }
+        });
+
+
+
+    });
+
+
+</script>
+
+
