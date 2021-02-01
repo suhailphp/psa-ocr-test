@@ -15,4 +15,4 @@ git commit -m "$msg";
 
 git push origin master;
 #push to gitHub
-git push gitHub master;
+#git push gitHub master;
