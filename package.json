@@ -1,6 +1,6 @@
 {
   "name": "psa-ocr-test",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "OCR Scanner test",
   "main": "./bin/www",
   "scripts": {
