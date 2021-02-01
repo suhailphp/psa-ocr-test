@@ -1,7 +1,7 @@
 'use strict'
 
 const appConfig = require('../configurations/appConfig.js')
-const debug = require('debug')(appConfig.APP_NAME + ":CONTROLLER-VehicleType.js");
+const debug = require('debug')(appConfig.APP_NAME + ":CONTROLLER-OCR.js");
 const i18n = require("i18n");
 const {gatekeeper} = require('../middlewares/index');
 
@@ -9,8 +9,10 @@ const fs = require('fs');
 const util = require('util');
 const readFile = util.promisify(fs.readFile);
 
-const {createWorker} = require('tesseract.js');
-const worker =  createWorker();
+const Tesseract = require('tesseract.js');
+const worker =  Tesseract.createWorker(
+    {logger: m => console.log(m)}
+);
 
 
 
@@ -60,21 +62,36 @@ module.exports = (Router, Models) => {
                 }
 
                 try{
-                    let fileData = await readFile('./files/test.png')
-                    //debug(fileData)
+
+                    let fileData = await readFile('./files/testDoc.jpg')
+
+                    // Tesseract.detect(fileData, { logger: m => console.log(m) })
+                    //     .then(({ data }) => {
+                    //         console.log(data);
+                    //     });
+
+
+                    debug('START');
                     await worker.load();
+                    debug('LOADED');
                     await worker.loadLanguage('eng+ara');
+                    debug('LANGUAGE loadLanguage');
                     await worker.initialize('eng+ara');
-                    // await worker.setParameters({
-                    //     tessjs_create_pdf: '1',
-                    // });
+                    debug('LANGUAGE initialize');
                     const resData = await worker.recognize(fileData);
+                    debug('DATA GOT');
                     //await worker.terminate();
 
-                    console.log(resData.data.blocks)
-                    data.text = resData.data.blocks[0].text
+                    //console.log(resData.data.blocks)
+                    data.text = resData.data.hocr
                     data.lines = resData.data.blocks[0].page.blocks[0].paragraphs[0].lines
                     //res.send(resData.data.blocks[0].page.blocks[0].paragraphs[0].lines[0].text)
+
+                    //for pdf
+                    // const { data:pdfData } = await worker.getPDF('Tesseract OCR Result');
+                    // fs.writeFileSync('tesseract-ocr-result.pdf', Buffer.from(pdfData));
+                    // console.log('Generate PDF: tesseract-ocr-result.pdf');
+                    //end pdf
                     res.render('form', data)
                 }
                 catch (error){
