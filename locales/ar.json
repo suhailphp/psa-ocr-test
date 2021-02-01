@@ -173,5 +173,10 @@
 	"Choose Category": "Choose Category",
 	"Question Created Successfully.": "Question Created Successfully.",
 	"Validation Only available with mobile Number , Student Number and Email ": "Validation Only available with mobile Number , Student Number and Email ",
-	"Both Password not matching": "Both Password not matching"
+	"Both Password not matching": "Both Password not matching",
+	"OCR": "OCR",
+	"Ocr": "Ocr",
+	"view OCR": "view OCR",
+	"Home": "Home",
+	"Ocr test": "Ocr test"
 }
