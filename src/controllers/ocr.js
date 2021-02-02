@@ -79,14 +79,15 @@ module.exports = (Router, Models) => {
                     // await worker.loadLanguage('eng');
                     // await worker.initialize('eng');
 
+
                     await worker.setParameters({
-                        tessedit_ocr_engine_mode:OEM.TESSERACT_ONLY,
-                        tessedit_pageseg_mode:PSM.AUTO_ONLY,
-                        tessjs_create_hocr: '0',
-                        tessjs_create_tsv:'0',
-                        tessjs_create_box:'0',
-                        tessjs_create_unlv:'0',
-                        tessjs_create_osd:'0',
+                        // tessedit_ocr_engine_mode:OEM.TESSERACT_ONLY,
+                        // tessedit_pageseg_mode:PSM.AUTO_ONLY,
+                        // tessjs_create_hocr: '0',
+                        // tessjs_create_tsv:'0',
+                        // tessjs_create_box:'0',
+                        // tessjs_create_unlv:'0',
+                        // tessjs_create_osd:'0',
                     });
 
                     const resData = await worker.recognize(fileData,{logger: m => console.log(m)});
@@ -95,8 +96,9 @@ module.exports = (Router, Models) => {
                     //await worker.terminate();
 
                     //console.log(resData.data.blocks)
-                    data.text = resData.data.text
+                    data.text = resData.data.hocr
                     data.lines = resData.data.blocks[0].page.blocks[0].paragraphs[0].lines
+
                     //res.send(resData.data.blocks[0].page.blocks[0].paragraphs[0].lines[0].text)
 
                     //for pdf
@@ -104,7 +106,10 @@ module.exports = (Router, Models) => {
                     // fs.writeFileSync('tesseract-ocr-result.pdf', Buffer.from(pdfData));
                     // console.log('Generate PDF: tesseract-ocr-result.pdf');
                     //end pdf
-                    res.render('form', data)
+
+                    data.layout= null
+                    res.render('hocr', data)
+                    //res.render('form', data)
                 }
                 catch (error){
                     //await worker.terminate();
