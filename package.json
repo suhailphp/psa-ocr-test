@@ -67,7 +67,7 @@
     "socket.io-redis": "^5.2.0",
     "striptags": "^3.1.1",
     "tedious": "^2.7.1",
-    "tesseract.js": "^4.0.0",
+    "tesseract.js": "^2.1.4",
     "timediff": "^1.1.1",
     "underscore": "^1.9.2",
     "unoconv-promise": "^1.0.8",
