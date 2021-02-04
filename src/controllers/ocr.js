@@ -10,9 +10,9 @@ const util = require('util');
 const readFile = util.promisify(fs.readFile);
 
 const Tesseract = require('tesseract.js');
-// const worker =  Tesseract.createWorker(
-//     {logger: m => console.log(m)}
-// );
+const worker =  Tesseract.createWorker(
+    {logger: m => console.log(m)}
+);
 const PSM = Tesseract.PSM
 const OEM = Tesseract.OEM
 
@@ -29,7 +29,6 @@ let currentPage = 'OCR';
 
 module.exports = (Router, Models) => {
     // options are csrfProtection, parseForm
-
 
 
     Router
@@ -51,6 +50,24 @@ module.exports = (Router, Models) => {
             })
 
     Router
+        .get('/scan',
+            gatekeeper.authorization(['ADMIN']),
+            async (req, res, next) => {
+
+                let data = {
+                    title: req.__('OCR'),
+                    breadcrumb: Utils.breadcrumbs.init(__filename, moduleName).add('view OCR'),
+                    currentPage,
+                    CurrentDate: new Date()
+                }
+
+                res.render('scan',data)
+
+
+
+            })
+
+    Router
         .get('/process',
             gatekeeper.authorization(['ADMIN']),
             async (req, res, next) => {
@@ -62,10 +79,10 @@ module.exports = (Router, Models) => {
                     CurrentDate: new Date()
                 }
 
-                let fileData = await readFile('./files/test.png')
+                let fileData = await readFile('./files/testDoc1.png')
 
                 // let timeout = 0
-                // for(let i=1;i<=20;i++){
+                // for(let i=1;i<=50;i++){
                 //     if(i%5 == 0){
                 //         timeout = timeout+30000
                 //         setTimeout(() => { doWorker(fileData,i); }, timeout);
@@ -74,26 +91,29 @@ module.exports = (Router, Models) => {
                 //         setTimeout(() => { doWorker(fileData,i); }, timeout);
                 //     }
                 // }
+                //
+                // res.send('done')
 
 
 
                 try{
-                    let worker =  Tesseract.createWorker(
-                        //{logger: m => console.log(m)}
-                    );
+
 
                     await worker.load();
-                    await worker.loadLanguage('eng+ara');
-                    await worker.initialize('eng+ara');
+                    // await worker.loadLanguage('eng+ara');
+                    // await worker.initialize('eng+ara');
 
-                    // await worker.loadLanguage('eng');
-                    // await worker.initialize('eng');
+
+                    await worker.loadLanguage('eng');
+                    await worker.initialize('eng');
+
+                    debug('language loaded ');
 
 
                     await worker.setParameters({
                         // tessedit_ocr_engine_mode:OEM.TESSERACT_ONLY,
                         // tessedit_pageseg_mode:PSM.AUTO_ONLY,
-                        // tessjs_create_hocr: '0',
+                        // tessjs_create_hocr: '1',
                         // tessjs_create_tsv:'0',
                         // tessjs_create_box:'0',
                         // tessjs_create_unlv:'0',
@@ -101,25 +121,25 @@ module.exports = (Router, Models) => {
                     });
 
                     const resData = await worker.recognize(fileData,
-                        //{logger: m => console.log(m)}
+                        {logger: m => console.log(m)}
                     );
 
                     debug('DATA GOT ');
-                    //await worker.terminate();
+                    await worker.terminate();
 
-                    data.text = resData.data.hocr
-                    data.lines = resData.data.blocks[0].page.blocks[0].paragraphs[0].lines
-
-                    //console.log(resData.data.blocks)
-                    console.log(resData.data.text)
-                    // data.layout= null
-                    // //res.render('hocr', data)
+                    data.text = resData.data.text
+                    //data.lines = resData.data.blocks[0].page.blocks[0].paragraphs[0].lines
+                    //
+                    // //console.log(resData.data.blocks)
+                    console.log(data)
+                    // // data.layout= null
+                    //res.render('hocr', data)
                     res.render('form', data)
                 }
                 catch (error){
                     //await worker.terminate();
                     console.log('some error ->'+error)
-                    //res.send(error.message)
+                    res.send(error.message)
                 }
 
 
